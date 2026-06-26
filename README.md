@@ -1,5 +1,8 @@
 # 🤖 Kayan AI Telegram Bot
 
+## 🔗 Try it on Telegram
+👉 [Click here to chat with Kayan AI](https://t.me/Khaled_2003_game_bot)
+
 A smart Telegram bot built with Python, powered by the Llama 3.3 70B model via the Groq API, capable of responding to users in whatever language they write in.
 
 ## ✨ Features
@@ -22,8 +25,8 @@ A smart Telegram bot built with Python, powered by the Llama 3.3 70B model via t
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/username/repo-name.git
-cd repo-name
+git clone https://github.com/KhalidAldakheelSec/Kayan-bot.git
+cd Kayan-bot
 ```
 
 2. Install the required dependencies:
@@ -32,3 +35,14 @@ pip install -r requirements.txt
 ```
 
 3. Create a `.env` file and add:
+BOT_TOKEN=your_telegram_bot_token
+
+GROQ_API_KEY=your_groq_api_key
+
+4. Run the bot:
+```bash
+python bot2.py
+```
+
+## 📌 Note
+Sensitive credentials (tokens and API keys) are protected using environment variables and are not pushed to GitHub.
