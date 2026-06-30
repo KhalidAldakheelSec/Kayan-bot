@@ -13,8 +13,6 @@ import time
 import os
 from datetime import datetime
 from dotenv import load_dotenv
-from flask import Flask
-from threading import Thread
 
 # =========================
 # تحميل المفاتيح من ملف .env (محلياً) أو من Environment Variables (على Render)
@@ -24,19 +22,11 @@ load_dotenv()
 TOKEN = os.environ.get("BOT_TOKEN")
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
-# =========================
-# سيرفر Flask صغير (مطلوب عشان Render يعتبر الخدمة شغالة)
-# =========================
-web_app = Flask('')
+# رابط الخدمة على Render (لازم يكون نفس الرابط الظاهر بصفحة الخدمة)
+RENDER_EXTERNAL_URL = os.environ.get("RENDER_EXTERNAL_URL")
 
-@web_app.route('/')
-def home():
-    return "Bot is alive"
-
-def run_web():
-    web_app.run(host='0.0.0.0', port=8080)
-
-Thread(target=run_web).start()
+# المنفذ (Port) يلي Render بيحدده تلقائياً
+PORT = int(os.environ.get("PORT", 8080))
 
 # =========================
 # إعدادات
@@ -184,12 +174,18 @@ async def reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(bot_reply)
 
 # =========================
-# تشغيل البوت
+# تشغيل البوت عبر Webhook
 # =========================
 app = ApplicationBuilder().token(TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, reply))
 
-print("🤖 Bot running...")
-app.run_polling()
+print("🤖 Bot starting with webhook...")
+
+app.run_webhook(
+    listen="0.0.0.0",
+    port=PORT,
+    url_path=TOKEN,
+    webhook_url=f"{RENDER_EXTERNAL_URL}/{TOKEN}"
+)
